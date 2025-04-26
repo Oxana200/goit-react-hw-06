@@ -12,12 +12,14 @@ const Contact = ({ id, name, number }) => {
 
   return (
     <div className={s.contact}>
-      <p className={s.contactName}>
-        <FaUser className={s.icon} /> {name}
-      </p>
-      <p className={s.contactNumber}>
-        <FaPhone className={s.icon} /> {number}
-      </p>
+     <div>
+        <p className={s.contactName}>
+          <FaUser className={s.icon} /> {name}
+        </p>
+        <p className={s.contactNumber}>
+          <FaPhone className={s.icon} /> {number}
+        </p>
+     </div>
       <button className={s.deleteButton} onClick={handleDelete}>Delete</button>
     </div>
   );
