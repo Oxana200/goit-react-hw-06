@@ -1,20 +1,21 @@
 import { Formik, Form, Field, ErrorMessage } from 'formik';
-import { useState } from 'react';
-import * as Yup from 'yup';
 import { nanoid } from 'nanoid';
+import { useDispatch } from 'react-redux';
+import * as Yup from 'yup';
+import { addContact } from '../../redux/contactsSlice';
 import s from './ContactForm.module.css';
+import { useState } from 'react';
 
-const ContactForm = ({ onAdd }) => {
+const ContactForm = () => {
+  const dispatch = useDispatch();
   const [inputWarning, setInputWarning] = useState('');
 
   const formatPhoneNumber = (input) => {
     const digits = input.replace(/\D/g, '');
-
     let formatted = '';
     if (digits.length <= 3) formatted = digits;
     else if (digits.length <= 5) formatted = `${digits.slice(0, 3)}-${digits.slice(3)}`;
     else formatted = `${digits.slice(0, 3)}-${digits.slice(3, 5)}-${digits.slice(5, 7)}`;
-
     return formatted;
   };
 
@@ -48,8 +49,7 @@ const ContactForm = ({ onAdd }) => {
       name: values.name,
       number: values.number,
     };
-
-    onAdd(newContact);
+    dispatch(addContact(newContact));
     resetForm();
   };
 
@@ -63,10 +63,16 @@ const ContactForm = ({ onAdd }) => {
         <Form className={s.form}>
           <label className={s.label}>
             Name
-            <Field className={s.input} type="text" name="name" placeholder="Rosie Simpson" onChange={(e) => {
-              const formattedName = formatName(e.target.value);
-              setFieldValue('name', formattedName);
-            }} />
+            <Field
+              className={s.input}
+              type="text"
+              name="name"
+              placeholder="Rosie Simpson"
+              onChange={(e) => {
+                const formattedName = formatName(e.target.value);
+                setFieldValue('name', formattedName);
+              }}
+            />
             <ErrorMessage className={s.error} component="div" name="name" />
           </label>
 
@@ -87,7 +93,6 @@ const ContactForm = ({ onAdd }) => {
                       } else {
                         setInputWarning('');
                       }
-
                       const formatted = formatPhoneNumber(input);
                       setFieldValue('number', formatted);
                     }}
@@ -107,4 +112,3 @@ const ContactForm = ({ onAdd }) => {
 };
 
 export default ContactForm;
-
